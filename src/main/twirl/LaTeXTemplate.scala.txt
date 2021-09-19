@@ -1,0 +1,17 @@
+@import jnirvana.scalatex.dsl.template.Template
+@import jnirvana.scalatex.templating._
+@(template: Template, problems: List[Problem])
+
+\documentclass{template.documentClass}
+
+@for(preambleItem <- template.preambleItems) {
+@preambleItem
+}
+
+\begin{document}
+    \maketitle
+
+@for(problem <- problems) {
+@problem.content.mkString("\n")
+}
+\end{document}
