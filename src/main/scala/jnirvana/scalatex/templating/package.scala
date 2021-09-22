@@ -1,7 +1,6 @@
 package jnirvana.scalatex
 
 import jnirvana.scalatex.dsl.template.Template
-import jnirvana.scalatex.dsl.{Project, Target}
 
 package object templating {
   // Template source:
@@ -23,20 +22,23 @@ package object templating {
   sealed trait Token
 
   case class NormalLine(content: String) extends Token
+
   case class ProblemStartingLine(problemName: String) extends Token
+
   case class ProblemEndingLine() extends Token
 
-  private val problemStartingLinePattern = "%! <problem name=(.*)>".r
-  private val problemEndingLinePattern = "%! </problem>".r
+  private val problemStartingLinePattern = ".*%! <problem name=(.*)>".r
+  private val problemEndingLinePattern = ".*%! </problem>".r
 
   def tokenize: String => Token = {
-      case problemStartingLinePattern(name) => ProblemStartingLine(name)
-      case problemEndingLinePattern() => ProblemEndingLine()
-      case l => NormalLine(l)
+    case problemStartingLinePattern(name) => ProblemStartingLine(name)
+    case problemEndingLinePattern() => ProblemEndingLine()
+    case l => NormalLine(l)
   }
 
   case class Problem(name: String, content: List[String])
 
+  // FIXME line number report of some error message is not correct
   def parse(tokenized: List[Token]): List[Problem] = {
     type NumberedLines = List[(Token, Int)]
     def collect(restLines: NumberedLines): List[String] =
