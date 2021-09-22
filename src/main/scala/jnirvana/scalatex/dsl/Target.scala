@@ -16,6 +16,14 @@ case class Target(title: String,
     println("Generating necessary directory scheme for the build...")
     mkDirScheme(title)
 
+    import sys.process._
+    println("Copying resources...")
+    for (name <- resources) {
+      val targetPath = new File(s"./resource/$name").getAbsolutePath
+      val linkPath = new File(s"./build/$title/$name").getAbsolutePath
+      s"ln -s '$targetPath' '$linkPath'".!
+    }
+
     println("Parsing the source document into problems...")
     val sourceDocument = Source.fromFile("./source.tex")
     val tokenized = sourceDocument
@@ -26,7 +34,7 @@ case class Target(title: String,
       .parse(tokenized)
       .filter(x => problemNames.contains(x.name))
 
-    println("Composing target from template...")
+    println("Composing target document from template...")
     val renderedText = templating.render(template, problems)
     val renderedFile = new File(s"./build/$title/$title.tex")
     val bw = new BufferedWriter(new FileWriter(renderedFile))

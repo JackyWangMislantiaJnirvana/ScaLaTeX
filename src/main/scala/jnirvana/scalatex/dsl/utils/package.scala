@@ -6,6 +6,12 @@ package object utils {
   def pmsDeploy(): Unit = {}
 
   def mkDirScheme(targetName: String): Unit = {
+    val sourceResourceDirectory = new File("./resource")
+    if (!sourceResourceDirectory.exists()) {
+      println("No source resource directory. Creating one.")
+      sourceResourceDirectory.mkdir()
+    }
+
     val rootBuildDirectory = new File("./build")
     if (!rootBuildDirectory.exists()) {
       println("No root build directory. Creating one.")
@@ -16,12 +22,6 @@ package object utils {
     if (!targetBuildDirectory.exists()) {
       println("No target build directory. Creating one.")
       targetBuildDirectory.mkdir()
-    }
-
-    val resourceDirectory = new File(s"./build/$targetName/resource")
-    if (!resourceDirectory.exists()) {
-      println("No resource directory. Creating one.")
-      resourceDirectory.mkdir()
     }
   }
 }
