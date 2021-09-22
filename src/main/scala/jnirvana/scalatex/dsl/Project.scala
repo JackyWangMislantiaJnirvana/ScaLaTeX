@@ -1,9 +1,7 @@
 package jnirvana.scalatex.dsl
 
 import jnirvana.scalatex.dsl.template.Template
-import scopt.OParser
-
-import java.io.File
+import scopt.{OParser, OParserBuilder}
 
 trait Project {
   val sourceFilename: String
@@ -15,8 +13,9 @@ trait Project {
                      command: String = "",
                      tasks: List[String] = Nil
                    )
-  val builder = OParser.builder[Config]
-  val parser = {
+
+  val builder: OParserBuilder[Config] = OParser.builder[Config]
+  val parser: OParser[Unit, Config] = {
     import builder._
     OParser.sequence(
       programName("<prefix>"),
@@ -54,7 +53,7 @@ trait Project {
             targets.filter(x => t.contains(x.title))
               .foreach(x => {
                 println(s"📦Compositing target ${x.title}...")
-                x.compositePhase(new File(sourceFilename), template)
+                x.compositePhase(template)
               })
           case Config("compile", t) =>
             targets.filter(x => t.contains(x.title))

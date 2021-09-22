@@ -2,7 +2,7 @@
 @import jnirvana.scalatex.templating._
 @(template: Template, problems: List[Problem])
 
-\documentclass{template.documentClass}
+\documentclass{@(template.documentClass)}
 
 @for(preambleItem <- template.preambleItems) {
 @preambleItem

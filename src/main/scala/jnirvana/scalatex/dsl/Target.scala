@@ -10,7 +10,7 @@ import scala.io.Source
 case class Target(title: String,
                   problemNames: List[String],
                   resources: List[String]) {
-  def compositePhase(inputFile: File, template: Template): Unit = {
+  def compositePhase(template: Template): Unit = {
     println("Inside composite phase!")
 
     println("Generating necessary directory scheme for the build...")
@@ -34,7 +34,16 @@ case class Target(title: String,
     bw.close()
   }
 
-  def compilePhase(): Unit = println("Inside compile phase!")
+  def compilePhase(): Unit = {
+    println("Inside compile phase!")
+    import sys.process._
+    val result = (s"xelatex" +
+      s" -interaction=nonstopmode" +
+      s" -file-line-error" +
+      s" -output-directory=./build/$title/" +
+      s" ./build/$title/$title.tex").!
+    println(s"Compiler exited with status code $result.")
+  }
 
   def deployPhase(): Unit = println("Inside deploy phase!")
 }
