@@ -1,0 +1,13 @@
+{
+	"Create Problem": {
+		"scope": "latex",
+		"prefix": "prob",
+		"body": [
+			"%! <problem name=${1:id}>",
+			"\\begin{tcbproblem}{${1:id}}",
+			"$0",
+			"\\end{tcbproblem}",
+			"%! </problem>"
+		]
+	}
+}
