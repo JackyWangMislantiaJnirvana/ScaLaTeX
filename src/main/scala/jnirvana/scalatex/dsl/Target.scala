@@ -10,7 +10,7 @@ import scala.io.Source
 case class Target(title: String,
                   problemNames: List[String],
                   resources: List[String]) {
-  def compositePhase(template: Template): Unit = {
+  def compositePhase(sourceFileName: String, template: Template): Unit = {
     println("Inside composite phase!")
 
     println("Generating necessary directory scheme for the build...")
@@ -25,7 +25,7 @@ case class Target(title: String,
     }
 
     println("Parsing the source document into problems...")
-    val sourceDocument = Source.fromFile("./source.tex")
+    val sourceDocument = Source.fromFile(s"./$sourceFileName")
     val tokenized = sourceDocument
       .getLines()
       .map(templating.tokenize)

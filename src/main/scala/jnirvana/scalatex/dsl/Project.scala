@@ -53,7 +53,7 @@ trait Project {
             targets.filter(x => t.contains(x.title))
               .foreach(x => {
                 println(s"📦Compositing target ${x.title}...")
-                x.compositePhase(template)
+                x.compositePhase(sourceFilename, template)
               })
           case Config("compile", t) =>
             targets.filter(x => t.contains(x.title))
